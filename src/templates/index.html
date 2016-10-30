@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SW2015 Tutorial</title>
+
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>      
+
+	</head>
+
+    <style>
+        body{
+            /*background-color: #96beff;*/
+            background-image: url(/static/images/earth_01.jpg);
+            background-size: cover; 
+        }
+
+        .centered-text {
+            text-align:center
+        } 
+
+        .content-box {
+            background-color: #e0f7ff;
+            border-radius: 20px;
+            padding: 50px;
+        }
+
+        .selection-box {
+            border-style: dotted;
+            border-width: 2px;
+            border-color: #063a06;
+        }
+
+    </style>
+
+	<body>
+        
+        <div class="row" style="padding-top: 100px;color: white;">
+            <div class="span12 centered-text">
+                <h1>Find your spot!</h1>
+                <p>Use this tool to find nice things to do on a location!</p>
+            </div>
+        </div>
+
+        <br><br><br><br><br><br><br>
+		<div class="container">
+
+			<div class='row content-panel' id="panel-1">
+                <div class='col-lg-4'>&nbsp</div>            
+				<div class='col-lg-4 content-box'>
+					<h3>Choose your city:</h3>
+                    <select name="citySelector" id="citySelector">
+                        <option value="default"> - - - - Select city - - - - </option>
+                    </select>
+				</div>
+                <div class='col-lg-4'>&nbsp</div>                
+			</div>
+
+
+            <div class='row hide content-panel' id="panel-2">
+                <div class='col-lg-4'>&nbsp</div>
+                <div class='col-lg-4 content-box'>
+                    <h3>Select your constraints:</h3>
+                    <input id="budget_selector" type="checkbox" value="budget"><label for="budget_selector">Budget</label></input><br>
+                        <div id="budget_input" class="hide selection-box" >
+                            <div class="row">
+                                <div class="col-lg-2">&nbsp</div>
+                                <div class="col-lg-10">
+                                    <input type="radio" name="budget" id="budgetValueLow" value="ex:SmallBudget" checked><label for="budgetValueLow">Low&nbsp</label></input>
+                                    <input type="radio" name="budget" id="budgetValueHigh" value="ex:LargeBudget"><label for="budgetValueHigh">High&nbsp</label></input>
+                                </div>                                
+                            </div>
+                        </div>
+                    <input id="duration_selector" type="checkbox" value="duration"><label for="duration_selector">Duration</label></input><br>
+                        <div id="duration_input" class="hide">
+                            <div class="row">
+                                <div class="col-lg-12 selection-box">
+                                    <input type="radio" name="duration" id="durationLow" value="ex:ShortDuration" checked><label for="durationLow">Less then an hour&nbsp</label></input>
+                                    <input type="radio" name="duration" id="durationHigh" value="ex:LongDuration"><label for="durationHigh">More than an hour&nbsp</label></input>
+                                </div>                                
+                            </div>                        
+                        </div>                                     
+                </div>
+                <div class='col-lg-4'>&nbsp</div>                
+            </div>    
+
+            <div class='row hide content-panel' id="panel-3">
+                <div class='col-lg-4'>&nbsp</div>
+                <div class='col-lg-4 content-box'>
+                    <h3>Select your interests:</h3>
+                    <input type="radio" name="interest" value="all" id="allInterests" checked><label for="allInterests">All interests</label></input><br>
+                    <input type="radio" name="interest" value="ex:FoodAndBeveragefacility" id="food"><label for="food">Food & Beverage</label></input><br>
+                    <input type="radio" name="interest" value="ex:Relaxingfacility" id="relax"><label for="relax">Relaxing Facilities</label></input><br>
+                    <input type="radio" name="interest" value="ex:CulturalSightsfacility" id="culture"><label for="culture">Cultural Sites</label></input><br>
+                    <input type="radio" name="interest" value="ex:Entertainmentfacility" id="entertainment"><label for="entertainment">Entertainment Facilities</label></input><br>               
+                </div>
+                <div class='col-lg-4'>&nbsp</div>                
+            </div>   
+
+           
+
+            <div class="row centered-text hide" id="resultButton" style="padding-top: 10px;">
+                <div class='col-lg-4'>&nbsp</div>
+                <div class='col-lg-4'>
+                    <button type="button" class="btn btn-success" onclick="getResults();"><i class="glyphicon glyphicon-search"></i> Give me my results!</button>
+                </div>
+                
+                <div class='col-lg-4'>&nbsp</div>                  
+                
+            </div>
+
+            <div class='row hide content-panel hide' id="panel-4">
+                <div class='col-lg-4'>&nbsp</div>
+                <div class='col-lg-4 content-box'>
+                    <h3>These are the results:</h3>
+                    <table id="resultTable">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class='col-lg-4'>&nbsp</div>                
+            </div>    
+
+		</div>
+
+        <div>
+            <div class='row'>
+                <div class='col-lg-2'>&nbsp</div>
+
+                <div class='col-lg-2 centered-text'>
+                    <button id="back" type="button" class="btn btn-warning hide"><i class="glyphicon glyphicon-chevron-left"></i>Back</button>
+                </div>
+
+                
+                <div class='col-lg-2'>&nbsp</div>
+                <div class='col-lg-2'>&nbsp</div>
+                
+
+                <div class='col-lg-2'>
+                    <button id="next" type="button" class="btn btn-warning">Next<i class="glyphicon glyphicon-chevron-right"></i></button>
+                </div>
+
+                <div class='col-lg-2'>&nbsp</div>
+
+            </div>            
+        </div>
+
+		<script src='{{ url_for("static", filename="js/jquery-1.11.0.min.js") }}' type='text/javascript'></script>
+		<!-- <script src='{{ url_for("static", filename="js/tutorial.js") }}' type='text/javascript'></script> -->
+
+        <script type='text/javascript'>
+            var current_page = 1;
+            var max_pages = 3;
+            var min_pages = 1;
+
+            var TUTORIAL_REPOSITORY = 'http://localhost:5820/find_your_spot';
+
+            $(function(){
+        
+                getCities();
+
+                $("#next").click(function(){
+                    console.log('next');
+                    current_page = current_page + 1;
+                    $(".content-panel").addClass("hide");
+                    $("#panel-"+current_page).removeClass("hide");
+                    if (current_page == max_pages) {
+                        $("#next").addClass("hide");
+                        $("#resultButton").removeClass("hide");
+                    }else{
+                        $("#next").removeClass("hide");
+                        $("#back").removeClass("hide");                        
+                        $("#resultButton").addClass("hide");
+                    }
+                }); 
+
+                $("#back").click(function(){
+                    console.log('back');
+                    current_page = current_page - 1;                    
+                    $(".content-panel").addClass("hide");
+                    $("#panel-"+current_page).removeClass("hide");
+                    if (current_page == min_pages) {
+                        $("#back").addClass("hide");
+                    }else{
+                        $("#back").removeClass("hide");
+                        $("#next").removeClass("hide");                        
+                        $("#resultButton").addClass("hide");
+                    }
+                });    
+
+                $("#budget_selector").change(function(){
+                    if ($(this).is(':checked')){
+                        $("#budget_input").removeClass('hide');
+                    }else{
+                        $("#budget_input").addClass('hide');
+                    }
+                });  
+
+                $("#duration_selector").change(function(){
+                    if ($(this).is(':checked')){
+                        $("#duration_input").removeClass('hide');
+                    }else{
+                        $("#duration_input").addClass('hide');
+                    }
+                });  
+                                                            
+            });
+
+            function getCities(){
+
+                var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> select ?cityNames WHERE { ?city ex:isLocatedIn ?country. ?country a ex:EuropeanCountry. ?city rdfs:label ?cityNames. FILTER(lang(?cityNames) = 'en')}";
+
+                var endpoint = TUTORIAL_REPOSITORY + '/query';
+                var format = 'JSON';
+                var reasoner = 'false';
+
+                $.get('/sparql',data={'endpoint': endpoint, 'query': query, 'format': format, 'reasoner': reasoner}, function(json){
+                    $.each(json.results.bindings, function (key, data) {
+                        $('#citySelector')
+                         .append($("<option></option>")
+                                    .attr("value",data.cityNames.value)
+                                    .text(data.cityNames.value)); 
+                    })            
+                });
+
+            }
+
+            function getResults(){
+
+                var city = '';
+                city = $("#citySelector").val();
+
+                if (city == 'default') {
+                    alert("Please select a city...");
+                    return;
+                }
+
+                var budgetSet = $("#budget_selector").is(':checked');
+                var durationSet = $("#duration_selector").is(':checked');
+
+                var budget = $('input[name=budget]:checked').val();
+                var duration = $('input[name=duration]:checked').val();
+                var interest = $('input[name=interest]:checked').val();
+
+
+                console.log(budgetSet, durationSet, budget, duration, interest);
+
+
+                var largeBudget = "?facility a ex:LargeBudget.";
+                var smallBudget = "?facility a ex:SmallBudget.";
+
+                var shortDuration = "?facility a ex:ShortDuration.";
+                var longDuration = "?facility a ex:LongDuration.";
+
+                var food = "ex:FoodAndBeveragefacility";
+                var relax = "ex:Relaxingfacility";
+                var cultural = "ex:CulturalSightsfacility";                        
+                var entertainment = "ex:Entertainmentfacility";
+
+
+                if (budgetSet && durationSet) {
+                    if (interest != 'all') {
+                        var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> SELECT ?FacilityName WHERE { ?facility ex:isLocatedIn ?city. ?facility a "+budget+". ?facility a "+duration+". ?facility a ?sortFacility. ?sortFacility rdfs:subClassOf "+interest+". ?facility rdfs:label ?FacilityName. ?city rdfs:label ?cityName FILTER regex(str(?cityName), '"+city+"') }";                        
+                    }else{
+                        var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> SELECT ?FacilityName WHERE { ?facility ex:isLocatedIn ?city. ?facility a "+budget+". ?facility a "+duration+". ?facility rdfs:label ?FacilityName. ?city rdfs:label ?cityName FILTER regex(str(?cityName), '"+city+"') }";                        
+                    }
+                }else if(budgetSet && !durationSet){
+                    if (interest != 'all') {
+                        var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> SELECT ?FacilityName WHERE { ?facility ex:isLocatedIn ?city. ?facility a "+budget+". ?facility a ?sortFacility. ?sortFacility rdfs:subClassOf "+interest+". ?facility rdfs:label ?FacilityName. ?city rdfs:label ?cityName FILTER regex(str(?cityName), '"+city+"') }";                        
+                    }else{
+                        var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> SELECT ?FacilityName WHERE { ?facility ex:isLocatedIn ?city. ?facility a "+budget+". ?facility rdfs:label ?FacilityName. ?city rdfs:label ?cityName FILTER regex(str(?cityName), '"+city+"') }";                
+                    }                    
+                }else if(!budgetSet && durationSet){
+                    if (interest != 'all') {
+                        var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> SELECT ?FacilityName WHERE { ?facility ex:isLocatedIn ?city. ?facility a "+duration+". ?facility a ?sortFacility. ?sortFacility rdfs:subClassOf "+interest+". ?facility rdfs:label ?FacilityName. ?city rdfs:label ?cityName FILTER regex(str(?cityName), '"+city+"') }";                        
+                    }else{
+                        var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> SELECT ?FacilityName WHERE { ?facility ex:isLocatedIn ?city.  ?facility a "+duration+". ?facility rdfs:label ?FacilityName. ?city rdfs:label ?cityName FILTER regex(str(?cityName), '"+city+"') }";          
+                    }                    
+                }else{
+                    if (interest != 'all') {
+                        var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> SELECT ?FacilityName WHERE { ?facility ex:isLocatedIn ?city. ?facility a ?sortFacility. ?sortFacility rdfs:subClassOf "+interest+". ?facility rdfs:label ?FacilityName. ?city rdfs:label ?cityName FILTER regex(str(?cityName), '"+city+"') }";                        
+                    }else{
+                        var query = "PREFIX ex: <http://www.example.com/Highlights/> PREFIX ma: <http://www.example.com/Mapping/> SELECT ?FacilityName WHERE { ?facility ex:isLocatedIn ?city. ?facility rdfs:label ?FacilityName. ?city rdfs:label ?cityName FILTER regex(str(?cityName), '"+city+"') }";                              
+                    }                    
+                }           
+
+                console.log(query);
+
+                var endpoint = TUTORIAL_REPOSITORY + '/query';
+                var format = 'JSON';
+                var reasoner = 'true';
+
+                $("#resultTable > tbody").html("");
+
+                $.get('/sparql',data={'endpoint': endpoint, 'query': query, 'format': format, 'reasoner': reasoner}, function(json){ 
+                    $.each(json.results.bindings, function (key, data) {
+                        console.log(data);
+                        $('#resultTable > tbody:last-child')
+                         .append($("<tr></tr>")
+                                    .attr("value",data.FacilityName.value)
+                                    .text(data.FacilityName.value)); 
+                    })                          
+                    $("#panel-4").removeClass("hide");
+                    $("#panel-3").addClass("hide");    
+                    $("#resultButton").addClass("hide");                
+                });                
+            }
+
+        </script>
+
+	</body>
+</head>
